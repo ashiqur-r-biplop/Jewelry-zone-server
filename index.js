@@ -113,11 +113,11 @@ async function run() {
     });
     app.patch("/update-user-role", async (req, res) => {
       const { userId, role } = req.body;
-      const filter = { _id: new ObjectId(userId)};
+      const filter = { _id: new ObjectId(userId) };
       const options = { upsert: true };
       const updateUserROle = {
         $set: {
-            role: role,
+          role: role,
         },
       };
       const result = await userCollection.updateOne(
@@ -126,6 +126,27 @@ async function run() {
         options
       );
       res.send(result);
+    });
+    app.patch("/update-product-status", async (req, res) => {
+      const { userId, status } = req.body;
+      const filter = { _id: new ObjectId(userId) };
+      const options = { upsert: true };
+      const updateUserROle = {
+        $set: {
+          status: status,
+        },
+      };
+      const result = await JewelryCollection.updateOne(
+        filter,
+        updateUserROle,
+        options
+      );
+      res.send(result);
+    });
+    //  get all jewelry
+    app.get("/all-jewelry", async (req, res) => {
+      const jewelry = await JewelryCollection.find().toArray();
+      res.send(jewelry);
     });
 
     // Send a ping to confirm a successful connection
