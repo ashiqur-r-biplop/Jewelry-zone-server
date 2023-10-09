@@ -102,6 +102,13 @@ async function run() {
         console.log(error);
       }
     });
+    // get all user
+    app.get("/all-user", async (req, res) => {
+      try {
+        const result = await userCollection.find().toArray();
+        res.send(result);
+      } catch (error) {console.log(error);}
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
