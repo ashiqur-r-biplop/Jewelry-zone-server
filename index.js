@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -107,7 +107,25 @@ async function run() {
       try {
         const result = await userCollection.find().toArray();
         res.send(result);
-      } catch (error) {console.log(error);}
+      } catch (error) {
+        console.log(error);
+      }
+    });
+    app.patch("/update-user-role", async (req, res) => {
+      const { userId, role } = req.body;
+      const filter = { _id: new ObjectId(userId)};
+      const options = { upsert: true };
+      const updateUserROle = {
+        $set: {
+            role: role,
+        },
+      };
+      const result = await userCollection.updateOne(
+        filter,
+        updateUserROle,
+        options
+      );
+      res.send(result);
     });
 
     // Send a ping to confirm a successful connection
