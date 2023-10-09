@@ -1,10 +1,10 @@
-const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const jwt = require("jsonwebtoken");
 const port = process.env.PORT || 5000;
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 app.use(cors());
 app.use(express.json());
@@ -147,6 +147,11 @@ async function run() {
     app.get("/all-jewelry", async (req, res) => {
       const jewelry = await JewelryCollection.find().toArray();
       res.send(jewelry);
+    });
+    app.get("/all-approved-jewelry", async (req, res) => {
+      const filter = { status: "approved" };
+      const result = await JewelryCollection.find(filter).toArray();
+      res.send(result);
     });
 
     // Send a ping to confirm a successful connection
